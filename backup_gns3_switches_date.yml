@@ -6,7 +6,7 @@
 
 
     tasks:
-      - name: run multiple commands on remote nodes
+      - name: run multiple commands on remote nodes_ test1
         ios_command:
           commands:
             - show run
