@@ -17,3 +17,5 @@
    
       - name: save output to a file
         copy: content="{{ print_output.stdout[0] }}" dest="/home/labansible/gns3-labs/backupconfigs/{{ lookup('pipe','date +%Y-%m-%d-%H-%M') }}-{{ inventory_hostname }}.txt"
+      
+        delegate_to: labansible@172.16.31.34
