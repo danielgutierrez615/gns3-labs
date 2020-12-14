@@ -1,0 +1,18 @@
+---
+  - name: show running config
+    hosts: gns3-switches
+    gather_facts: false
+    connection: ansible.netcommon.network_cli
+
+    tasks:
+      - name: run multiple commands on remote nodes
+        ios_command:
+          commands:
+            - show run
+
+        register: print_output
+
+      - debug: var=print_output.stdout_lines
+   
+      - name: save output to a file
+        copy: content="{{ print_output.stdout[0] }}" dest="/var/lib/awx/projects/gns3-lab-git/backupconfigs/{{ lookup('pipe','date +%Y-%m-%d-%H-%M') }}-{{ inventory_hostname }}.txt"
