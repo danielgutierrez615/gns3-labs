@@ -1,6 +1,6 @@
 ---
   - name: backup config of gns3 switches
-    hosts: gns3-switches
+    hosts: all
     gather_facts: false
     connection: local
 
