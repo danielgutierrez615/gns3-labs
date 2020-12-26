@@ -1,0 +1,163 @@
+---
+- name: Remove ip access-group 110 in from interface GigabitEthernet6/0
+  hosts: gns3-mt-a08-01
+  gather_facts: false
+
+  tasks:
+    - name: Remove ip access-group 110
+      cisco.ios.ios_config:
+        lines:
+          - no ip access-group 110 in
+        parents: interface port-channel 20
+       
+        
+    - name: Configure Access-list 110
+      cisco.ios.ios_config:
+        lines:
+            -  remark ***** TestUpdate3 *****
+            -  remark ***** TestUpdate *****
+            -  remark ***** INTERNET SECURITY ACL *****
+            -  permit ip 66.90.20.0 0.0.0.15 host 97.102.10.12
+            -  permit ip host 97.102.10.12 66.90.20.0 0.0.0.15
+            -  permit ip 66.90.20.0 0.0.0.15 host 71.47.1.100
+            -  permit ip host 71.47.1.100 66.90.20.0 0.0.0.15
+            -  permit ip 66.90.20.0 0.0.0.15 99.111.195.240 0.0.0.7
+            -  permit ip 99.111.195.240 0.0.0.7 66.90.20.0 0.0.0.15
+            -  permit ip 66.90.20.0 0.0.0.15 4.55.24.0 0.0.0.255
+            -  permit ip 4.55.24.0 0.0.0.255 66.90.20.0 0.0.0.15
+            -  permit ip 66.90.20.0 0.0.0.15 4.55.28.0 0.0.0.255
+            -  permit ip 4.55.28.0 0.0.0.255 66.90.20.0 0.0.0.15
+            -  permit ip 66.90.20.0 0.0.0.15 host 71.175.45.77
+            -  permit ip host 71.175.45.77 66.90.20.0 0.0.0.15
+            -  permit ip 66.90.20.0 0.0.0.15 host 71.168.239.46
+            -  permit ip host 71.168.239.46 66.90.20.0 0.0.0.15
+            -  permit ip 66.90.20.0 0.0.0.15 host 71.223.148.56
+            -  permit ip host 71.223.148.56 66.90.20.0 0.0.0.15
+            -  remark ***** SBC PUBLIC INTERFACE *****
+            -  permit ip 66.90.22.0 0.0.0.255 4.55.24.192 0.0.0.63
+            -  permit ip 4.55.24.192 0.0.0.63 66.90.22.0 0.0.0.255
+            -  permit ip 66.90.22.0 0.0.0.255 4.55.28.192 0.0.0.63
+            -  permit ip 4.55.28.192 0.0.0.63 66.90.22.0 0.0.0.255
+            -  deny   tcp 45.146.164.0 0.0.1.255 host 66.90.51.20 eq 443
+            -  deny   ip any 66.90.20.0 0.0.0.15
+            -  deny   ip 66.90.20.0 0.0.0.15 any
+            -  deny   ip any 66.90.22.0 0.0.0.255
+            -  deny   ip 66.90.22.0 0.0.0.255 any
+            -  deny   tcp any host 216.53.138.131 eq domain
+            -  deny   udp any host 216.53.138.131 eq domain
+            -  remark ***** SNMP & SMART_INSTALL TO CORE *****
+            -  deny   udp any 66.90.1.0 0.0.0.255 range snmp snmptrap
+            -  deny   tcp any 66.90.1.0 0.0.0.255 range 161 162
+            -  deny   tcp any 66.90.1.0 0.0.0.255 eq 4786
+            -  deny   udp any 66.90.3.0 0.0.0.255 range snmp snmptrap
+            -  deny   tcp any 66.90.3.0 0.0.0.255 range 161 162
+            -  deny   tcp any 66.90.3.0 0.0.0.255 eq 4786
+            -  deny   udp any 66.90.8.0 0.0.0.255 range snmp snmptrap
+            -  deny   tcp any 66.90.8.0 0.0.0.255 range 161 162
+            -  deny   tcp any 66.90.8.0 0.0.0.255 eq 4786
+            -  deny   udp any 66.90.9.0 0.0.0.255 range snmp snmptrap
+            -  deny   tcp any 66.90.9.0 0.0.0.255 range 161 162
+            -  deny   tcp any 66.90.9.0 0.0.0.255 eq 4786
+            -  remark ***** ALLOW CALIX CONNECT TO FTTH *****
+            -  permit tcp host 52.24.69.224 216.230.32.0 0.0.15.255 range 30005 30007
+            -  permit tcp host 35.164.144.216 216.230.32.0 0.0.15.255 range 30005 30007
+            -  permit tcp host 52.41.80.223 216.230.32.0 0.0.15.255 range 30005 30007
+            -  permit tcp host 50.112.31.188 216.230.32.0 0.0.15.255 range 30005 30007
+            -  permit tcp host 34.210.116.13 216.230.32.0 0.0.15.255 range 30005 30007
+            -  permit tcp host 199.71.142.29 216.230.32.0 0.0.15.255 range 30005 30007
+            -  permit tcp host 52.24.69.224 216.230.32.0 0.0.15.255 eq 8080
+            -  permit tcp host 35.164.144.216 216.230.32.0 0.0.15.255 eq 8080
+            -  permit tcp host 52.41.80.223 216.230.32.0 0.0.15.255 eq 8080
+            -  permit tcp host 50.112.31.188 216.230.32.0 0.0.15.255 eq 8080
+            -  permit tcp host 34.210.116.13 216.230.32.0 0.0.15.255 eq 8080
+            -  permit tcp host 199.71.142.29 216.230.32.0 0.0.15.255 eq 8080
+            -  permit tcp host 52.24.69.224 216.230.32.0 0.0.15.255 eq 8443
+            -  permit tcp host 35.164.144.216 216.230.32.0 0.0.15.255 eq 8443
+            -  permit tcp host 52.41.80.223 216.230.32.0 0.0.15.255 eq 8443
+            -  permit tcp host 50.112.31.188 216.230.32.0 0.0.15.255 eq 8443
+            -  permit tcp host 34.210.116.13 216.230.32.0 0.0.15.255 eq 8443
+            -  permit tcp host 199.71.142.29 216.230.32.0 0.0.15.255 eq 8443
+            -  permit tcp host 52.24.69.224 216.97.208.0 0.0.7.255 range 30005 30007
+            -  permit tcp host 35.164.144.216 216.97.208.0 0.0.7.255 range 30005 30007
+            -  permit tcp host 52.41.80.223 216.97.208.0 0.0.7.255 range 30005 30007
+            -  permit tcp host 50.112.31.188 216.97.208.0 0.0.7.255 range 30005 30007
+            -  permit tcp host 34.210.116.13 216.97.208.0 0.0.7.255 range 30005 30007
+            -  permit tcp host 199.71.142.29 216.97.208.0 0.0.7.255 range 30005 30007
+            -  permit tcp host 52.24.69.224 216.97.208.0 0.0.7.255 eq 8080
+            -  permit tcp host 35.164.144.216 216.97.208.0 0.0.7.255 eq 8080
+            -  permit tcp host 52.41.80.223 216.97.208.0 0.0.7.255 eq 8080
+            -  permit tcp host 50.112.31.188 216.97.208.0 0.0.7.255 eq 8080
+            -  permit tcp host 34.210.116.13 216.97.208.0 0.0.7.255 eq 8080
+            -  permit tcp host 199.71.142.29 216.97.208.0 0.0.7.255 eq 8080
+            -  permit tcp host 52.24.69.224 216.97.208.0 0.0.7.255 eq 8443
+            -  permit tcp host 35.164.144.216 216.97.208.0 0.0.7.255 eq 8443
+            -  permit tcp host 52.41.80.223 216.97.208.0 0.0.7.255 eq 8443
+            -  permit tcp host 50.112.31.188 216.97.208.0 0.0.7.255 eq 8443
+            -  permit tcp host 34.210.116.13 216.97.208.0 0.0.7.255 eq 8443
+            -  permit tcp host 199.71.142.29 216.97.208.0 0.0.7.255 eq 8443
+            -  deny   ip 5.188.0.0 0.0.255.255 any
+            -  deny   ip any 5.188.0.0 0.0.255.255
+            -  remark ***** DENY CALIX CONNECT PORTS FTTH *****
+            -  deny tcp any 216.230.32.0 0.0.15.255 range 30005 30007
+            -  deny tcp any 216.230.32.0 0.0.15.255 eq 8080
+            -  deny tcp any 216.230.32.0 0.0.15.255 eq 8443
+            -  remark ***** FTTH RESIDENTIAL ACCESS *****
+            -  deny   tcp any 216.53.186.0 0.0.0.255 eq domain
+            -  deny   udp any 216.53.186.0 0.0.0.255 eq domain
+            -  deny   tcp any 216.230.32.0 0.0.15.255 eq 7547
+            -  deny   tcp any 216.230.32.0 0.0.15.255 eq smtp
+            -  deny   udp any 216.230.32.0 0.0.15.255 eq bootpc
+            -  deny   tcp any 216.230.32.0 0.0.15.255 eq www
+            -  deny   tcp any 216.230.32.0 0.0.15.255 range 135 139
+            -  deny   udp any 216.230.32.0 0.0.15.255 range 135 netbios-ss
+            -  deny   tcp any 216.230.32.0 0.0.15.255 range 161 162
+            -  deny   udp any 216.230.32.0 0.0.15.255 range snmp snmptrap
+            -  deny   tcp any 216.230.32.0 0.0.15.255 eq 445
+            -  deny   tcp any 216.230.32.0 0.0.15.255 eq 520
+            -  deny   udp any 216.230.32.0 0.0.15.255 eq rip
+            -  deny   tcp any 216.230.32.0 0.0.15.255 eq 1433
+            -  deny   udp any 216.230.32.0 0.0.15.255 eq 1434
+            -  deny   udp any 216.230.32.0 0.0.15.255 eq 1900
+            -  deny   tcp any 216.230.32.0 0.0.15.255 eq 1080
+            -  deny   tcp any 216.230.32.0 0.0.15.255 eq 3389
+            -  remark ***** DENY CALIX CONNECT PORTS FTTH *****
+            -  deny tcp any 216.97.208.0 0.0.7.255 range 30005 30007
+            -  deny tcp any 216.97.208.0 0.0.7.255 eq 8080
+            -  deny tcp any 216.97.208.0 0.0.7.255 eq 8443
+            -  remark ***** FTTH RESIDENTIAL ACCESS *****
+            -  deny   tcp any 216.97.208.0 0.0.7.255 eq 7547
+            -  deny   tcp any 216.97.208.0 0.0.7.255 eq smtp
+            -  deny   udp any 216.97.208.0 0.0.7.255 eq bootpc
+            -  deny   tcp any 216.97.208.0 0.0.7.255 eq www
+            -  deny   tcp any 216.97.208.0 0.0.7.255 range 135 139
+            -  deny   udp any 216.97.208.0 0.0.7.255 range 135 netbios-ss
+            -  deny   tcp any 216.97.208.0 0.0.7.255 range 161 162
+            -  deny   udp any 216.97.208.0 0.0.7.255 range snmp snmptrap
+            -  deny   tcp any 216.97.208.0 0.0.7.255 eq 445
+            -  deny   tcp any 216.97.208.0 0.0.7.255 eq 520
+            -  deny   udp any 216.97.208.0 0.0.7.255 eq rip
+            -  deny   tcp any 216.97.208.0 0.0.7.255 eq 1433
+            -  deny   udp any 216.97.208.0 0.0.7.255 eq 1434
+            -  deny   udp any 216.97.208.0 0.0.7.255 eq 1900
+            -  deny   tcp any 216.97.208.0 0.0.7.255 eq 1080
+            -  deny   tcp any 216.97.208.0 0.0.7.255 eq 3389
+            -  permit ip any any
+
+        before: no ip access-list extended 110
+        parents: ip access-list extended 110
+
+    - name: Put back ip access-group 110 in from interface port-channel 20
+      cisco.ios.ios_config:
+        lines: 
+          - ip access-group 110 in
+        parents: interface port-channel 20
+
+
+    - name: save running to startup when modified
+      cisco.ios.ios_config:
+        save_when: modified
+
+
+
+
+  
