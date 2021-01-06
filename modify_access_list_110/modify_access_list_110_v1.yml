@@ -1,0 +1,37 @@
+---
+- name: Remove ip access-group 110 in from interface GigabitEthernet6/0
+  hosts: gns3-mt-a08-01
+  gather_facts: false
+
+  tasks:
+    - name: Remove ip access-group 110
+      cisco.ios.ios_config:
+        lines:
+          - no ip access-group 110 in
+        parents: interface port-channel 20
+       
+        
+    - name: Configure Access-list 110
+      cisco.ios.ios_config:
+        lines:
+            -  { 'access-list' }
+
+
+        before: no ip access-list extended 110
+        parents: ip access-list extended 110
+
+    - name: Put back ip access-group 110 in from interface port-channel 20
+      cisco.ios.ios_config:
+        lines: 
+          - ip access-group 110 in
+        parents: interface port-channel 20
+
+
+    - name: save running to startup when modified
+      cisco.ios.ios_config:
+        save_when: modified
+
+
+
+
+  
